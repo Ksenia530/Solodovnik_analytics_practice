@@ -11,6 +11,7 @@ System(General_system, "Система управления маркетинго
 System_Ext(Payment_system, "Система обработки платажей", "Совершение покупок, управление транзакциями.")
 Rel(customer, General_system, "Использует")
 Rel(administrator, General_system, "Вносит правки при необходимости")
-Rel(General_system, Payment_system, "Взаимодействует")
+Rel(General_system, Payment_system, "Взаимодействует с")
+
 @enduml
 
