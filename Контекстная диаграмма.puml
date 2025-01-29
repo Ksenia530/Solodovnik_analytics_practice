@@ -5,24 +5,11 @@ LAYOUT_WITH_LEGEND()
 
 title System Context diagram for Shop
 
-Person(customer, "Покупатель", "Просматривает каталог товаров, совершает различные операции в системах")
+Person(customer, "Пользователь", "Просматривает каталог компании товаров, совершает различные операции в системе")
 Person(administrator, "Оператор", "Проверяет работоспособность систем, поддерживает функциональность")
-System(General_system, "Компания по продаже строительных материалов", "Продажа товаров, проверка наличия в магазине")
+System(General_system, "Система управления маркетинговыми процессами", "Продажа товаров, проверка наличия на складах, организация доставки и управление платежами")
 
-System_Ext(Product_sales_system, "Система товаров", "Хранит актуальное колиство товаров")
-System_Ext(Order_system, "Система заказов", "Оформление заказов, управление статусами.")
-System_Ext(Customer_system, "Система клиентов", "Управление аккаунтами.")
-System_Ext(Storage_system, "Система складов", "Проверка товаров на наличие.")
-System_Ext(Delivery_system, "Система доставки", "Управление и отслеживание процесса доставки.")
-System_Ext(Payment_system, "Система обработки платажей", "Совершение покупок, управление транзакциями.")
-
-Rel(customer, General_system, "Выбирает товары")
+Rel(customer, General_system, "Использует")
 Rel(administrator, General_system, "Вносит правки при необходимости")
-Rel(General_system, Customer_system, "Использует")
-Rel(General_system, Product_sales_system, "Использует")
-Rel(General_system, Order_system, "Использует")
-Rel(General_system, Storage_system, "Использует")
-Rel(General_system, Payment_system, "Использует")
-Rel(General_system, Delivery_system, "Использует")
 
 @enduml
