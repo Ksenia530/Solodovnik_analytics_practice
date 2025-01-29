@@ -1,0 +1,39 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Container diagram for Shop
+
+Person(customer, "Покупатель", "Просматривает каталог товаров, совершает различные операции в системах")
+Person(administrator, "Оператор", "Проверяет работоспособность систем, поддерживает функциональность")
+System_Boundary(s1, "Управление маркетинговыми процессами") {
+    Container(web, "Веб-приложение", "Java", "Предоставляет пользователям доступ к сайту строительной компании" )
+    Container(Product_sales_system, "Сервис поиска товаров", "JavaScript, Angular", "Хранит актуальное колиство товаров")
+    Container(Order_system, "Сервис обработки заказов", "Java", "Оформление заказов, управление статусами.")
+    Container(Customer_system, "Сервис авторизции", "Java", "Настройка прав доступа")
+    Container(Storage_system, "Сервис складов", "Java", "Проверка товаров на наличие.")
+    Container(backend_api, "Web API Geteway", "Java, Docker Container", "Установка взаимодействия по API")
+    ContainerDb(database, "Database", "Postgre SQL", "База данных для хранения информации")
+    ContainerQueue(queue, "Брокер", "Rabbit", "Очередь заказов")
+    Container(sms, "Сервис уведомлений", "Java", "Отправляет пользователю уведомления")
+    Container(Delivery_system, "Сервис доставки", "JavaScript, Angular", "Управление и отслеживание процесса доставки.")
+}
+
+System_Ext(Payment_system, "Система обработки платажей", "Совершение покупок, управление транзакциями.")
+
+Rel(customer, web, "Просматривает каталог и делает заказ")
+Rel(administrator, web, "Вносит правки")
+Rel(backend_api, Customer_system, "Отправляет запрос на регистрацию или авторизацию")
+Rel(Customer_system,database, "Записывет данные по клиенту")
+Rel(web,backend_api,"REST API","JSON/HTTPS")
+Rel(backend_api, Product_sales_system, "Делает запрос на поиск товаров", "REST API")
+Rel(backend_api, Storage_system, "Проверяет наличие товара на складе","REST API")
+Rel(backend_api, Order_system, "Оформляет заказ для определенного пользователя и возвращает ответ")
+Rel(backend_api,sms, "Запрос на получение уведомлений")
+Rel(Storage_system,database, "Хранит данные о товарах")
+Rel(Order_system,database, "Хранит данные о клиентах и их заказах")
+Rel(Order_system,queue, "Совершение транзакций")
+Rel(queue,Payment_system, "Оплата товара")
+Rel(backend_api, Delivery_system, "Отслеживает доставку")
+@enduml
