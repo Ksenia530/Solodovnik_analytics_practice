@@ -41,3 +41,6 @@ image:out/Контекстная диаграмма/Контекстная ди�
 
 == Диаграмма контейнеров
 image:out/C4_Container/C4_Container.svg[]
+
+== Проектирование реляционной БД
+image:out/ERDia/ERDia.svg[]
