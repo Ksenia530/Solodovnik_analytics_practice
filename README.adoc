@@ -44,3 +44,6 @@ image:out/C4_Container/C4_Container.svg[]
 
 == Проектирование реляционной БД
 image:out/ERDia/ERDia.svg[]
+
+== Проектирование нереляционной БД
+image:out/NoSQLDb/NoSQLDb.svg[]
