@@ -1,0 +1,42 @@
+@startuml
+title Relational database 
+skinparam linetype ortho
+
+entity "Users" as e01 {
+    idUser : objectId **"PK"**
+  --
+  name : string
+  surmame : string
+  number : long
+  e-mail : string
+  numberDiscountCard : object 
+}
+object "numberDiscountCard" as e02 {
+    
+    number : long
+}
+
+entity "Orders" as e03 {
+  idOrders : objectId **"PK"**
+  --
+  product: array 
+  orderDate : timestamp
+  buy : array  
+}
+object "Product" as e04{
+  article : long
+  name: string
+  quantityShops : long
+  countryOfOrigin : string
+}
+object "Buy" as e05{
+  paymentMethod : string
+  employee : string
+  client : string
+  deliveryMethod : string
+}
+e01 ||--|| e02
+e03 }|--o{ e04
+e03 }|--o{ e05
+e01 ||--o{ e03
+@enduml
