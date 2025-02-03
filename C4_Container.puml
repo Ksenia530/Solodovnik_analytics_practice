@@ -1,9 +1,11 @@
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
+AddRelTag("backup", $textColor="orange", $lineColor="orange", $lineStyle = DashedLine())
 LAYOUT_WITH_LEGEND()
-
-title Container diagram for Shop
+!$COLOR_B_4 = "#542788"
+UpdateElementStyle("external_system", $bgColor=$COLOR_B_4, $fontColor=$COLOR_NEUTRAL, $borderColor=$COLOR_B_2, $legendText="External system")
 
 Person(customer, "Покупатель", "Просматривает каталог товаров, совершает различные операции в системах")
 Person(administrator, "Оператор", "Проверяет работоспособность систем, поддерживает функциональность")
@@ -22,9 +24,19 @@ System_Boundary(s1, "Управление маркетинговыми проц�
     ContainerQueue(queue, "Брокер", "Rabbit", "Очередь заказов")
     Container(sms, "Сервис уведомлений", "Java", "Отправляет пользователю уведомления")
     Container(Delivery_system, "Сервис доставки", "JavaScript, Angular", "Управление и отслеживание процесса доставки.")
+    ContainerDb(cache, "Cache Database", "Memcached","БД для кеширования")
+    ContainerDb(cache1, "Cache Database", "Memcached","БД для кеширования")
 }
+System(s2, "Система обработки платажей", "Совершение покупок, управление транзакциями.")
+System_Ext(shardsystem, "Redis cluster")
 
-System_Ext(Payment_system, "Система обработки платажей", "Совершение покупок, управление транзакциями.")
+    Container_Ext(Shard, "Shard #1"){
+        ContainerDb(master1,"Redis Master")
+        ContainerDb(slave, "Redis Replica ")
+        ContainerDb(slave2, "Redis Replica ")
+        ContainerDb(slave3, "Redis Replica ") 
+    }
+
 
 Rel(customer, web, "Просматривает каталог и делает заказ")
 Rel(administrator, web, "Вносит правки")
@@ -35,11 +47,21 @@ Rel(backend_api, Product_sales_system, "Делает запрос на поис�
 Rel(backend_api, Storage_system, "Проверяет наличие товара на складе","REST API")
 Rel(backend_api, Order_system, "Оформляет заказ для определенного пользователя и возвращает ответ")
 Rel(backend_api,sms, "Запрос на получение уведомлений")
-Rel(Storage_system,database2, "Хранит данные о товарах")
+Rel(Storage_system,database2, "Идет за данными в основную БД")
 Rel(Order_system,database3, "Хранит данные о клиентах и их заказах")
 Rel(Order_system,queue, "Совершение транзакций")
-Rel(queue,Payment_system, "Оплата товара")
+Rel(queue,s2, "Оплата товара")
+Rel(Storage_system,cache,"Проверяет есть ли данные по запросу в кеше")
+Rel_L(cache,Storage_system,"Данные не найдены", $tags="backup")
 Rel(backend_api, Delivery_system, "Отслеживает доставку")
 Rel(Delivery_system, database4, "хранит данные о доставке")
 Rel(Product_sales_system, database5, "хранит данные о товарах")
+Rel(Product_sales_system,cache1,"Проверяет есть ли данные по запросу в кеше")
+Rel(cache1,Product_sales_system,"Данные не найдены", $tags="backup")
+Rel_D(cache,Shard,"")
+Rel_D(cache1, shardsystem,"")
+Rel(master1, slave,"")
+Rel(master1,slave2,"")
+Rel(master1,slave3,"")
+
 @enduml
