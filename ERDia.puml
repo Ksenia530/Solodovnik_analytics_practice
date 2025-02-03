@@ -1,0 +1,94 @@
+@startuml
+title Relational database 
+skinparam linetype ortho
+
+entity "Users" as e01 {
+  idUser : integer **"PK"**
+  --
+  name : varchar
+  surmame : text
+  number : integer
+  e-mail : text
+  numberDiscountCard : integer **"FK"**
+}
+
+entity "Products" as e02 {
+  idProduct : integer **"PK"**
+  --
+  article : integer
+  name: text
+  quantityShops : integer
+  countryOfOrigin : text
+}
+
+entity "Orders" as e03 {
+  idOrders : integer **"PK"**
+  --
+  productName: integer 
+  orderAmount : integer
+  orderDate : datetime
+  paymentMethod : text
+  employee : text **"FK"**
+  client : text **"FK"**
+  deliveryMethod : text
+}
+
+entity "DiscountCards" as e04 {
+  numberDiscountCard : integer 
+  discountAmount : integer 
+}
+
+entity "Employees" as e05 {
+  idEmployees : integer **"PK"**
+  --
+  surname : text 
+  name : text
+  number : integer 
+  passportDetails : text
+  jobTitle : text
+}
+
+entity "Administration" as e06 {
+  idAdministration : integer **"PK"**
+  --
+  surname : text 
+  name : text
+  number : integer 
+  storeAddress : text **"FK"**
+}
+
+entity "Shops" as e07 {
+  storeCode: integer **"PK"**
+  --
+  storeAddress : text
+  director : text **"FK"**
+  
+}
+
+entity "Deliveries" as e08 {
+  deliveryCode : integer **"PK"**
+  --
+  carrierName : text 
+  article : integer **"FK"**
+  
+}
+
+entity "Stocks" as e09 {
+  stockNumber: integer **"PK"**
+  --
+  address : text
+  productName : text **"FK"**
+  quantityStocks : integer
+  countryOfOrigin : text
+}
+
+e01 ||--o{ e03
+e01 ||--|| e04
+e03 }o--|| e07
+e03 }o--||  e05
+e07 ||--o{ e09
+e07 ||--|| e06
+e07 }|--o{ e02
+e09 }|--o{  e02
+e08 ||--o{ e02
+@enduml
