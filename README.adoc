@@ -47,3 +47,6 @@ image:out/ERDia/ERDia.svg[]
 
 == Проектирование нереляционной БД
 image:out/NoSQLDb/NoSQLDb.svg[]
+
+== Диаграмма последовательности
+image:out/Sequence/Sequence.svg[]
