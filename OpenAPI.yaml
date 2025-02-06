@@ -1,0 +1,255 @@
+openapi: 3.0.2
+servers:
+  - url: storetest/v3
+info:
+  version: 1.0.
+  title: OpenAPI 3.0
+  termsOfService: 'http://swagger.io/terms/'
+tags:
+  - name: user
+    description: Everything about your Users
+  - name: order
+    description: Everything about your Orders
+  - name: product
+    description: Everything about your Products
+  - name: employee
+    description: Everything about your Products
+paths:
+  '/users/{idUser}':
+    get:
+      tags:
+        - user
+      summary: Get user information
+      operationId: getUserById
+      parameters:
+        - name: idUser
+          in: path
+          description: User identifier
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful request
+          content:
+            application/json:
+              example:
+                idUser: 125
+                name: Ksenia
+                surname: Ivanova
+                number: 18541157
+                email: test@yandex.com
+                numberDiscountCard: 55415
+        '401':
+          description: Invalid ID supplied
+      security:
+        - oauth2:
+            - read
+  /user: 
+    post:
+      tags:
+        - user
+      summary: Create a new user
+      operationId: CreateUser
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              example:
+                idUser: 111
+                name: new_user
+                surname: new_userSurname
+                number: new_number
+                email: new_user@example.com
+                numberDiscountCard: new_card
+        '400':
+          description: Invalid  value       
+      security:
+        - oauth2:
+            - read
+            - write
+  /employees/{idEmployees}:
+    patch:
+      tags:
+        - employee
+      summary: Partially update employee information
+      operationId: updated
+      parameters:
+        - name: idEmployees
+          in: path
+          description: employee information
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+      responses:
+        '200':
+          description: Successful partial update
+          content:
+            application/json:
+              example:
+                idEmployees: 26514
+                number: 48415
+      security:
+        - api_key: []
+  /orders/{idOrder}:
+    put:
+      tags:
+        - order
+      summary: Update order information
+      operationId: updated_order
+      parameters:
+        - name: idOrder
+          in: path
+          description: Order identifier
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        '200':
+          description: Successful update
+          content:
+            application/json:
+              example:
+                idOrder: 1255125
+                productName: updated_order
+                productAmount: 515415
+      security:
+        - api_key: []    
+  /products/{idProduct}:
+    delete:
+      tags:
+        - product
+      summary: Delete product
+      operationId: deleteProduct
+      parameters:
+        - name: idProduct
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Success
+        '404':
+          description: Product not found
+components:
+  schemas:
+    Order:
+      x-swagger-router-model: io.swagger.model.Order
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        idOrder:
+          type: integer
+          format: int64
+          example: 198772
+        productName:
+          type: string
+          format: product name
+          example: table
+        productAmount:
+          type: integer
+          format: int64
+          example: 5
+    User:
+      x-swagger-router-model: io.swagger.model.User
+      properties:
+        idUser:
+          type: integer
+          format: int64
+          example: 10
+        Name:
+          type: string
+          example: Petr
+        surname:
+          type: string
+          example: Petrov
+        email:
+          type: string
+          example: test@email.com
+        number:
+          type: string
+          example: 12345
+        numberDiscountCard:
+          type: integer
+          format: int64
+          example: 97427
+    Employee:
+      x-swagger-router-model: io.swagger.model.Employee
+      properties:      
+        idEmployees:
+          type: integer
+          format: int32
+          example: 1
+        number:  
+          type: string
+          example: 47313
+    Product:
+      x-swagger-router-model: io.swagger.model.Product
+      properties:
+        idProduct:
+          type: integer
+          format: int64
+          example: 10
+  requestBodies:
+    user:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/User'
+    order:
+       content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Order'
+    Employee:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'    
+  securitySchemes:
+    auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'https://.swagger.io/oauth/authorize'
+          scopes:
+            'write': modify in your account
+            'read': read your data
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header          
+     
+  
+          

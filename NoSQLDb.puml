@@ -21,18 +21,18 @@ entity "Orders" as e03 {
   --
   product: array 
   orderDate : timestamp
-  buy : array  
+  payment : array  
 }
 object "Product" as e04{
   article : long
   name: string
-  quantityShops : long
+  quantity : long
   countryOfOrigin : string
+  idUser : objectId
 }
-object "Buy" as e05{
+object "Payment" as e05{
   paymentMethod : string
-  employee : string
-  client : string
+  paid : boolean
   deliveryMethod : string
 }
 e01 ||--|| e02
