@@ -1,0 +1,36 @@
+@startuml
+actor       user
+participant Front
+participant APIGateway
+participant  AuthorizationService
+box #LightSeaGreen
+database DB 
+endbox 
+autonumber
+user ->  Front: Нажимает кнопку создать аккаунт
+Front -> Front: Открывает модалальное окно \nдля заполнения профиля
+user -> Front: Заполняет поля, \nнажимает кнопку \n"Зарегистрироваться"
+APIGateway -> APIGateway: Проверить заполнение полей
+    alt #DBE6DB Все обязательные поля заполнены
+        APIGateway -> APIGateway: Перейти к п.7
+        deactivate APIGateway
+    else #E0BECD Есть незаполненные обязательные поля
+        APIGateway --> Front: Response(400,message)
+        activate APIGateway 
+    end
+
+ Front -> APIGateway: Отправляет метод post /user
+APIGateway-> AuthorizationService: Отправляет метод \nна создание аккаунта
+AuthorizationService -> DB++: Сохраняет в БД
+note right
+ Сохраняет:
+- ФИО
+- Номер телефона
+- Email 
+- Номер дисконтной карты
+end note
+return Response 
+AuthorizationService --> APIGateway:  Response 201
+APIGateway --> Front:  Response 201
+Front -> user: Отображает пользователю модальное окно \nс успешной регистрацией
+@enduml
