@@ -78,7 +78,12 @@ paths:
                 email: new_user@example.com
                 numberDiscountCard: new_card
         '400':
-          description: Invalid  value       
+          description: Invalid  value      
+          content:
+            application/json:
+              example:
+                code: 400
+                message: Invalid  value   
       security:
         - oauth2:
             - read
@@ -110,6 +115,13 @@ paths:
               example:
                 idEmployees: 26514
                 number: 48415
+        '400':
+          description: Invalid  value      
+          content:
+            application/json:
+              example:
+                code: 400
+                message: Invalid  value   
       security:
         - api_key: []
   /orders/{idOrder}:
@@ -160,6 +172,11 @@ paths:
           description: Success
         '404':
           description: Product not found
+          content:
+            application/json:
+              example:
+                code: 400
+                message: Invalid  value   
 components:
   schemas:
     Order:
