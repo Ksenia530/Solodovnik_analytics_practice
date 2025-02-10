@@ -1,0 +1,70 @@
+= Работа с броккером Kafka
+
+=== Дата: [10.02.2025]
+
+== Топики:
+orders.events(created, updated, canceled, status)
+orders.transactions(completed,uncomplited)
+Сервис заказов создает каждый раз новое событи при создании заказа, обновлении или отмене в топике orders.events. 
+Сервис по обработке платежей подписывется на orders.events, при создании нового заказа проверяет платежные данные, после проведения транзакции публикует событие в топик orders.transactions. 
+Сервис уведомлений подписывается на топик orders.transactions и при успешной оплате заказа отправляет уведомление о создании заказа.
+
+== Сообщения:
+
+=== JSON. Сообщение о создании заказа, которое потом должен вычитать сервис обработки платежей
+{"OrderId": integer
+"productName": string
+"productAmount": integer
+"orderDate": "string"
+"UserId":integer
+}
+
+=== Avro
+{"namespace": "avro",
+"type": "record",
+"name": "Order",
+"fields": [
+     {"name": "OrderId", "type": ["int", "null"]},
+     {"name": "productName", "type": "string"},
+     {"name": "productAmount",  "type": ["int", "null"]},
+     {"name": "productName", "type": "string"},
+     {"name": "orderDate", "type": "string"},
+     {"name": "UserId", ["int", "null"]},
+]
+}
+
+=== Protobuf 
+В топике orders.transactions публикуется сообщения после успешной транзакции, которое вычитывает сервис уведомлений. В случае ошибки создается другое сообщение с описанием ошибки, которое так же вычитывает сервис notifications.
+
+
+syntax = "proto3";
+
+import  "google/protobuf/timestamp.proto";
+
+
+    enum Status {
+
+        DONE = 1;
+
+        ERROR = 2;
+
+      }
+
+
+message PaymentOrder {
+
+      uint32 paymentId = 1;
+
+      uint32 orderId = 2;
+
+      string orderDate = 3;
+
+      bool statusPaid = 4;
+
+      int orderAmount = 5;
+}
+
+message Error {
+    uint32  ErrorId = 1;
+    string errorText = 2;
+}
