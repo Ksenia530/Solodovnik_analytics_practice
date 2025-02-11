@@ -3,7 +3,7 @@
 === Дата: [10.02.2025]
 
 == Топики:
-orders.events(created, updated, canceled, status)
+orders.events(created, updated, canceled)
 orders.transactions(completed,uncomplited)
 Сервис заказов создает каждый раз новое событи при создании заказа, обновлении или отмене в топике orders.events. 
 Сервис по обработке платежей подписывется на orders.events, при создании нового заказа проверяет платежные данные, после проведения транзакции публикует событие в топик orders.transactions. 
@@ -11,7 +11,9 @@ orders.transactions(completed,uncomplited)
 
 == Сообщения:
 
-=== JSON. Сообщение о создании заказа, которое потом должен вычитать сервис обработки платежей
+=== JSON. 
+Сообщение о создании заказа, которое потом должен вычитать сервис обработки платежей
+
 {"OrderId": integer
 "productName": string
 "productAmount": integer
