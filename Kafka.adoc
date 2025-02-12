@@ -1,17 +1,18 @@
 = Работа с броккером Kafka
 
-=== Дата: [10.02.2025]
-
 == Топики:
-orders.events(created, updated, canceled)
-orders.transactions(completed,uncomplited)
-Сервис заказов создает каждый раз новое событи при создании заказа, обновлении или отмене в топике orders.events. 
-Сервис по обработке платежей подписывется на orders.events, при создании нового заказа проверяет платежные данные, после проведения транзакции публикует событие в топик orders.transactions. 
-Сервис уведомлений подписывается на топик orders.transactions и при успешной оплате заказа отправляет уведомление о создании заказа.
+[start=1]
+. orders.events(created, updated, canceled)
+. orders.transactions(completed,uncomplited)
+
+==== Сервис заказов создает каждый раз новое событие при создании заказа, обновлении или отмене в топике *orders.events*. 
+==== Сервис по обработке платежей подписывется на *orders.events*, при создании нового заказа проверяет платежные данные, после проведения транзакции публикует событие в топик orders.transactions. 
+==== Сервис уведомлений подписывается на топик *orders.transactions* и при успешной оплате заказа отправляет уведомление о создании заказа.
 
 == Сообщения:
 
-=== JSON. 
+=== JSON
+[source, JSON]
 Сообщение о создании заказа, которое потом должен вычитать сервис обработки платежей
 
 {"OrderId": integer
@@ -22,6 +23,7 @@ orders.transactions(completed,uncomplited)
 }
 
 === Avro
+[source, Avro]
 {"namespace": "avro",
 "type": "record",
 "name": "Order",
@@ -36,33 +38,20 @@ orders.transactions(completed,uncomplited)
 }
 
 === Protobuf 
-В топике orders.transactions публикуется сообщения после успешной транзакции, которое вычитывает сервис уведомлений. В случае ошибки создается другое сообщение с описанием ошибки, которое так же вычитывает сервис notifications.
+==== В топике orders.transactions публикуется сообщения после успешной транзакции, которое вычитывает сервис уведомлений. В случае ошибки создается другое сообщение с описанием ошибки, которое так же вычитывает сервис notifications.
 
-
+[source, Protobuf]
 syntax = "proto3";
-
 import  "google/protobuf/timestamp.proto";
-
-
     enum Status {
-
         DONE = 1;
-
         ERROR = 2;
-
       }
-
-
 message PaymentOrder {
-
       uint32 paymentId = 1;
-
       uint32 orderId = 2;
-
       string orderDate = 3;
-
       bool statusPaid = 4;
-
       int orderAmount = 5;
 }
 
