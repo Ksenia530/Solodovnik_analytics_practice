@@ -1,9 +1,9 @@
 @startuml
-title Relational database 
+
 skinparam linetype ortho
 
 entity "Users" as e01 {
-    idUser : objectId **"PK"**
+    userId : objectId **"PK"**
   --
   name : string
   surmame : string
@@ -17,7 +17,7 @@ object "numberDiscountCard" as e02 {
 }
 
 entity "Orders" as e03 {
-  idOrders : objectId **"PK"**
+  orderId : objectId **"PK"**
   --
   product: array 
   orderDate : timestamp
@@ -28,7 +28,7 @@ object "Product" as e04{
   name: string
   quantity : long
   countryOfOrigin : string
-  idUser : objectId
+  userId : objectId
 }
 object "Payment" as e05{
   paymentMethod : string

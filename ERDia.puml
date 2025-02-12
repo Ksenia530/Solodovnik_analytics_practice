@@ -3,7 +3,7 @@ title Relational database
 skinparam linetype ortho
 
 entity "Users" as e01 {
-  idUser : integer **"PK"**
+  userId : integer **"PK"**
   --
   name : varchar
   surmame : text
@@ -13,7 +13,7 @@ entity "Users" as e01 {
 }
 
 entity "Products" as e02 {
-  idProduct : integer **"PK"**
+  productId : integer **"PK"**
   --
   article : integer
   name: text
@@ -22,13 +22,13 @@ entity "Products" as e02 {
 }
 
 entity "Orders" as e03 {
-  idOrder : integer **"PK"**
+  orderId : integer **"PK"**
   --
   productName: integer 
   productAmount : integer
   orderDate : datetime
   employee : text **"FK"**
-  idUser : integer **"FK"**
+  userId : integer **"FK"**
   deliveryMethod : text
   orderАmount : integer
 }
@@ -39,7 +39,7 @@ entity "DiscountCards" as e04 {
 }
 
 entity "Employees" as e05 {
-  idEmployees : integer **"PK"**
+  employeesId : integer **"PK"**
   --
   surname : text 
   name : text
@@ -49,7 +49,7 @@ entity "Employees" as e05 {
 }
 
 entity "Payment" as e06 {
-  idPayment : integer **"PK"**
+  paymentId : integer **"PK"**
   --
   orderАmount : text **"FK"**
   paymentMethod : text
