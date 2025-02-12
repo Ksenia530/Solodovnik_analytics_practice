@@ -44,10 +44,6 @@
 [source, Protobuf]
 syntax = "proto3";
 import  "google/protobuf/timestamp.proto";
-    enum Status {
-        DONE = 1;
-        ERROR = 2;
-      }
 message PaymentOrder {
       uint32 paymentId = 1;
       uint32 orderId = 2;
