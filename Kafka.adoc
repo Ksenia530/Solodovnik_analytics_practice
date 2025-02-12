@@ -15,14 +15,15 @@
 Сообщение о создании заказа, которое потом должен вычитать сервис обработки платежей
 
 [source, JSON]
-{"OrderId": integer
-"productName": string
-"productAmount": integer
+{"OrderId": "integer"
+"productName": "string"
+"productAmount": "integer"
 "orderDate": "string"
-"UserId":integer
+"UserId": "integer"
 }
 
 === Avro
+Сообщение о создании заказа, которое потом должен вычитать сервис обработки платежей в формате Avro
 [source, Avro]
 {"namespace": "avro",
 "type": "record",
@@ -38,7 +39,7 @@
 }
 
 === Protobuf 
-==== В топике *orders.transactions* публикуется сообщения после успешной транзакции, которое вычитывает сервис уведомлений. В случае ошибки создается другое сообщение с описанием ошибки, которое так же вычитывает сервис notifications.
+==== В топике *orders.transactions* публикуется сообщение после успешной транзакции, которое вычитывает сервис уведомлений. В случае ошибки создается  сообщение с описанием ошибки, которое так же вычитывает сервис notifications.
 
 [source, Protobuf]
 syntax = "proto3";
