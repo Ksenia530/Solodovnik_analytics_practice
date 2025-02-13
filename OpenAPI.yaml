@@ -347,17 +347,14 @@ paths:
       tags:
         - authentication
       summary: Get information about user
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                access_token :
-                  type: string
-                  format: refresh_token 
-                  example: 1eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
+      parameters:
+        - name: Authorization
+          description: access_token
+          in: header
+          required: false
+          schema:
+            type: string
+            example: 1eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9
       responses:
         '200':
           description: Ok
@@ -366,14 +363,6 @@ paths:
               schema:
                 type: object
                 properties:
-                  refresh_token:
-                    type: string
-                    description: Bearer Token для дальнейшей аутентификации
-                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ
-                  access_token:
-                    type: string
-                    description: Bearer Token для дальнейшей аутентификации
-                    example: 1eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJPbmxpbmUgS  
                   e-mail:
                     type: string
                     description: user e-mail
