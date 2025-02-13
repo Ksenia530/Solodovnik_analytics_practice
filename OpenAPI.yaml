@@ -247,9 +247,7 @@ paths:
         '401':
           description: Invalid ID supplied
       security:
-        - bearerAuth:
-            - read
-            - write    
+        - bearerAuth: []   
   /recovery-password:
     post:
       tags:
@@ -342,6 +340,8 @@ paths:
           description: Forbidden
         '500':
           description: Server error
+      security:
+        - bearerAuth: []  
   /who-i-am:   
     get:
       tags:
@@ -396,6 +396,8 @@ paths:
           description: Forbidden
         '500':
           description: Server error    
+      security:
+        - bearerAuth: []  
   /products/{productId}:
     delete:
       tags:
