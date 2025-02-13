@@ -44,8 +44,7 @@ paths:
         '401':
           description: Invalid ID supplied
       security:
-        - oauth2:
-            - read
+        - api_key: []
   /user: 
     post:
       tags:
@@ -84,9 +83,7 @@ paths:
                 code: 400
                 message: Invalid  value   
       security:
-        - oauth2:
-            - read
-            - write
+        - oauth2: []
   /employees/{idEmployees}:
     patch:
       tags:
@@ -236,21 +233,23 @@ paths:
       tags:
         - authentication
       summary: Logout system
-      operationId: session_id
       parameters:
-        - name: session_id
-          in: query
-          description: session_identificator
-          required: true
+        - name: Authorization
+          description: session_id
+          in: header
+          required: false
           schema:
-            type: integer
-            format: int64   
-            example: 12345 
+            type: string
+            example: 1554125
       responses:
         '200':
           description: Ok
         '401':
           description: Invalid ID supplied
+      security:
+        - bearerAuth:
+            - read
+            - write    
   /recovery-password:
     post:
       tags:
@@ -299,7 +298,7 @@ paths:
           description: Forbidden
         '500':
           description: Server error
-  /oauth/token:
+  /refresh-token:
     post:
       tags:
         - authentication
@@ -343,7 +342,7 @@ paths:
           description: Forbidden
         '500':
           description: Server error
-  /oauth/user-info:   
+  /who-i-am:   
     get:
       tags:
         - authentication
@@ -518,9 +517,9 @@ components:
       name: api_key
       in: header          
     bearerAuth:            
-      type: http
-      scheme: bearer
-      bearerFormat: JWT  
+      type: apiKey
+      name: Authorization
+      in: header
      
   
           
